@@ -4,6 +4,7 @@ import { Button } from './ui/button'
 
 function TextContent() {
   const [text, setText] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [wordCount, setWordCount] = useState(0)
 
   const handleTextChange = (e: any) => {
@@ -12,7 +13,13 @@ function TextContent() {
     setWordCount(newText.split(/\s+/).filter(Boolean).length)
   }
   return (
-    <div>
+    <div className="p-10 rounded-lg relative">
+      {isLoading && (
+        <div className="absolute m-0 p-10 top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 rounded-lg">
+          <p className="text-white text-2xl">summarizing docunment...</p>
+        </div>
+      )}
+
       <div className="space-y-1">
         <h2 className="text-2xl font-semibold tracking-tight">Text Content</h2>
         <p className="text-sm text-muted-foreground">
