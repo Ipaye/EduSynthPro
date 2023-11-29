@@ -31,7 +31,7 @@ const createPrompt = async (content: any) => {
   const format_instructions = parser.getFormatInstructions()
   const prompt = new PromptTemplate({
     template:
-      'Generete both multiple choice questions and open ended questions from this extracted text. for the multiple choice, Generete 10 different questions. Follow the instructions and format your response to match the format instructions, no matter what! \n{format_instructions}\n{entry}',
+      'Generete both unique multiple choice questions and unique open ended questions from this extracted text. for the multiple choice, Generete 10 different questions. Follow the instructions and format your response to match the format instructions, no matter what! \n{format_instructions}\n{entry}',
     inputVariables: ['entry'],
     partialVariables: { format_instructions }
   })
