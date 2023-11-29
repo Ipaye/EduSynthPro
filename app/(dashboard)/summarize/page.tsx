@@ -20,13 +20,13 @@ function page() {
           </TabsList>
           <TabsContent
             value="pdf"
-            className="p-10 bg-gray-700 bg-opacity-10 backdrop-blur-md rounded-md"
+            className=" bg-gray-700 bg-opacity-10 backdrop-blur-md rounded-md"
           >
             <PDFContent />
           </TabsContent>
           <TabsContent
             value="text"
-            className="p-10 bg-gray-700 bg-opacity-10 backdrop-blur-md rounded-md"
+            className=" bg-gray-700 bg-opacity-10 backdrop-blur-md rounded-md"
           >
             <TextContent />
           </TabsContent>
