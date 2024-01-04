@@ -23,7 +23,7 @@ const parser = StructuredOutputParser.fromZodSchema(
           .describe('an list containing 10 questions from the content passed and a nested array of the answers')
       )
       .describe('a list of 10 questions generated from the content passed in'),
-    otherQuestions: z.array(z.string()).describe('a list of 10 other questions from the content passed in')
+    otherQuestions: z.array(z.string()).describe('a list of 10 other unique questions from the content passed in')
   })
 )
 

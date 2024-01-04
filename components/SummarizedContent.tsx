@@ -8,6 +8,7 @@ import Questions from './Questions'
 function SummarizedContent() {
   const router = useRouter()
   const [wordCount, setWordCount] = useState(0)
+  const [pdfCount, setPdfCount] = useState(0)
   const [loading, setLoading] = useState(false)
   const [questions, setQuestions] = useState(false)
 
@@ -31,7 +32,10 @@ function SummarizedContent() {
     if (summary) {
       setWordCount(summary.split(/\s+/).filter(Boolean).length)
     }
-  }, [summary])
+    if (pfdfContent) {
+      setPdfCount(pfdfContent.split(/\s+/).filter(Boolean).length)
+    }
+  }, [summary, pfdfContent])
 
   const generatePrompts = async () => {
     try {
@@ -51,20 +55,24 @@ function SummarizedContent() {
 
   return (
     <div>
-      <div className="rounded-lg relative">
-        <textarea
-          value={summary || ''}
-          className="w-full h-[400px] p-2 mt-4 border read-only border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
-        />
-        {/* <button
-          onClick={copyToClipboard}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Copy to Clipboard
-        </button>
-        {copySuccess && <p className="mt-2 text-green-500">{copySuccess}</p>} */}
+      <div className="flex flex-wrap justify-between">
+        <div className="rounded-lg relative w-full md:w-[45%]">
+          <h4 className="text-lg font-sans">Original Text</h4>
+          <textarea
+            value={pfdfContent || ''}
+            className="w-full h-[400px] p-2 mt-4 border read-only border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+          />
 
-        <p className="mt-2">Word count: {wordCount}</p>
+          <p className="mt-2">Word count: {pdfCount}</p>
+        </div>
+        <div className="rounded-lg relative w-full md:w-[45%]">
+          <h4 className="text-lg font-sans">Summarized Text</h4>
+          <textarea
+            value={summary || ''}
+            className="w-full h-[400px] p-2 mt-4 border read-only border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+          />
+          <p className="mt-2">Word count: {wordCount}</p>
+        </div>
       </div>
 
       <Button
