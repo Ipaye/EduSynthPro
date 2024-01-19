@@ -5,11 +5,14 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { parseAndUploadFile } from '@/lib/api'
 import { useRouter } from 'next/navigation'
+import { useToast } from '@/components/ui/use-toast'
 
 function PDFContent() {
   const [isLoading, setIsLoading] = useState(false)
   const [file, setFile] = React.useState(null)
   const router = useRouter()
+  const { toast } = useToast()
+
   const handleFileChange = (e: any) => {
     console.log(e.target.files[0])
     setFile(e.target.files[0])
@@ -17,11 +20,18 @@ function PDFContent() {
 
   const uploadFile = async () => {
     const formData = new FormData()
-    setIsLoading(true)
     try {
       if (file !== null) {
         formData.append('pdf', file)
       }
+      if (!file) {
+        toast({
+          description: 'Please select and upload a pdf file',
+          variant: 'destructive'
+        })
+        return
+      }
+      setIsLoading(true)
       const res = await parseAndUploadFile(formData)
       setIsLoading(false)
 

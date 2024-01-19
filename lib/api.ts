@@ -17,6 +17,21 @@ export const parseAndUploadFile = async (file: FormData) => {
   }
 }
 
+export const uploadText = async (file: string) => {
+  const res = await fetch(
+    new Request(createURL('/api/text-upload'), {
+      method: 'POST',
+      body: file
+    })
+  )
+
+  if (res.ok) {
+    const data = await res.json()
+    console.log('Prediction:', data)
+    return data
+  }
+}
+
 export const getPredicton = async (text: string) => {
   console.log(process.env.MODEL_API)
 

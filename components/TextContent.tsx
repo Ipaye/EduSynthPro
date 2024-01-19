@@ -1,17 +1,47 @@
 'use client'
 import React, { useState } from 'react'
 import { Button } from './ui/button'
+import { uploadText } from '@/lib/api'
+import { useRouter } from 'next/navigation'
+import { useToast } from '@/components/ui/use-toast'
 
 function TextContent() {
   const [text, setText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [wordCount, setWordCount] = useState(0)
+  const router = useRouter()
+  const { toast } = useToast()
 
   const handleTextChange = (e: any) => {
     const newText = e.target.value
     setText(newText)
     setWordCount(newText.split(/\s+/).filter(Boolean).length)
   }
+
+  const uploadFile = async () => {
+    try {
+      if (!text) {
+        toast({
+          description: 'Please fill out the text field',
+          variant: 'destructive'
+        })
+        return
+      }
+      setIsLoading(true)
+
+      const res = await uploadText(text)
+      setIsLoading(false)
+
+      localStorage.setItem('summary', res.data.summary)
+      localStorage.setItem('pdf-content', text)
+
+      router.push('/summary-content')
+      console.log(res)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <div className="p-10 rounded-lg relative">
       {isLoading && (
@@ -44,7 +74,12 @@ function TextContent() {
         className="shrink-0 bg-border h-[1px] w-full my-4"
       ></div>
 
-      <Button className="mt-4">Upload</Button>
+      <Button
+        onClick={uploadFile}
+        className="mt-4"
+      >
+        Upload
+      </Button>
     </div>
   )
 }
