@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { getPredicton } from '@/lib/api'
 
-export const POST = async (req: NextResponse) => {
+export const POST = async (req: NextRequest) => {
   const textContent = await req.text()
 
   try {
