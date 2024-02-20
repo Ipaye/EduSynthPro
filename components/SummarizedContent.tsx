@@ -76,8 +76,7 @@ function SummarizedContent() {
       </div>
 
       <Button
-        disabled={loading}
-        variant={loading ? 'disabled' : 'outline'}
+        disabled={loading ? true : false}
         className="mt-5 cursor-pointer"
         onClick={generatePrompts}
       >
