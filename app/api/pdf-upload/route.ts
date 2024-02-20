@@ -4,6 +4,7 @@ import PDFParser from 'pdf2json'
 import { getPredicton } from '@/lib/api'
 import { cleanAndFormatLecture } from '@/lib/utils'
 import { getQuestions } from '@/lib/ai'
+import { NextRequest, NextResponse } from 'next/server'
 
 const parsePDF = (filePath: string) => {
   let parsedText = ''
@@ -24,9 +25,9 @@ const parsePDF = (filePath: string) => {
   })
 }
 
-export const POST = async (req: any, res: any) => {
-  const formData = await req.body()
-  console.log('formData', formData)
+export const POST = async (req: NextRequest, res: NextResponse) => {
+  const formData = await req.formData()
+
   const uploadedFiles = formData.getAll('pdf')
   let fileName = ''
   let parsedText = ''
@@ -44,15 +45,12 @@ export const POST = async (req: any, res: any) => {
       try {
         parsedText = (await parsePDF(tempFilePath)) as string
         parsedText = cleanAndFormatLecture(parsedText)
-        console.log(parsedText)
 
         const result = await getPredicton(parsedText)
-        console.log('result>>>>', result)
 
-        return res.json({ data: result, parsedQuestion: parsedText })
+        return NextResponse.json({ data: result, parsedQuestion: parsedText })
       } catch (error) {
-        console.error('Error parsing PDF:', error)
-        return res.json({ data: error })
+        return NextResponse.json({ data: error })
       }
     }
   }
