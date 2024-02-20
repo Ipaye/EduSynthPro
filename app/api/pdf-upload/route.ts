@@ -1,4 +1,3 @@
-import { NextResponse, NextRequest } from 'next/server'
 import { promises as fs } from 'fs' // To save the file temporarily
 import { v4 as uuidv4 } from 'uuid' // To generate a unique filename
 import PDFParser from 'pdf2json'
@@ -25,8 +24,9 @@ const parsePDF = (filePath: string) => {
   })
 }
 
-export const POST = async (req: NextResponse) => {
-  const formData: FormData = await req.formData()
+export const POST = async (req: any, res: any) => {
+  const formData = await req.body()
+  console.log('formData', formData)
   const uploadedFiles = formData.getAll('pdf')
   let fileName = ''
   let parsedText = ''
@@ -44,14 +44,15 @@ export const POST = async (req: NextResponse) => {
       try {
         parsedText = (await parsePDF(tempFilePath)) as string
         parsedText = cleanAndFormatLecture(parsedText)
+        console.log(parsedText)
 
         const result = await getPredicton(parsedText)
         console.log('result>>>>', result)
 
-        return NextResponse.json({ data: result, parsedQuestion: parsedText })
+        return res.json({ data: result, parsedQuestion: parsedText })
       } catch (error) {
         console.error('Error parsing PDF:', error)
-        return NextResponse.json({ data: error })
+        return res.json({ data: error })
       }
     }
   }
